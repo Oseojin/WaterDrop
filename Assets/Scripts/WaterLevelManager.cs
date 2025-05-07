@@ -19,9 +19,8 @@ public class WaterLevelManager : MonoBehaviour
         waterSprite.size= new Vector2(width, currentHeight);
 
         // 바닥 충돌 기준도 함께 상승
-        Vector3 colliderPos = new Vector3(fillCollider.position.x, currentHeight, fillCollider.position.z);
+        Vector3 colliderPos = new Vector3(fillCollider.position.x, currentHeight - fillCollider.localScale.y / 2, fillCollider.position.z);
         fillCollider.localPosition = colliderPos;
-        Debug.Log(colliderPos);
     }
 
     public bool IsFull()

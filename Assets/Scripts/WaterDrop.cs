@@ -1,17 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class WaterDrop : MonoBehaviour
 {
     public float growSpeed = 0.5f;
-    public float maxScale = 2.5f;
+    public float maxScale = 1f;
 
     private bool isReleased = false;
     private Rigidbody2D rb;
 
+    private GameObject sprite;
+
+    private AudioSource audioSource;
+    public List<AudioResource> soundList;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
         rb.bodyType = RigidbodyType2D.Kinematic;
+        sprite = GetComponentInChildren<SpriteRenderer>().gameObject;
     }
 
     public void FollowMouse(Vector2 position)
@@ -35,7 +46,14 @@ public class WaterDrop : MonoBehaviour
         rb.gravityScale = 1f;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void PlayRandomSound()
+    {
+        int idx = Random.Range(0, soundList.Count);
+        audioSource.resource = soundList[idx];
+        audioSource.Play();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (isReleased && collision.gameObject.CompareTag("Bottom"))
         {
@@ -44,10 +62,17 @@ public class WaterDrop : MonoBehaviour
             {
                 float size = transform.localScale.x;
                 levelManager.AddWater(size);
+                PlayRandomSound();
             }
 
-            Destroy(gameObject);
+            StartCoroutine(DestroyAfterDelay(2f));
         }
     }
 
+    private IEnumerator DestroyAfterDelay(float delay)
+    {
+        sprite.SetActive(false);
+        yield return new WaitForSeconds(delay);
+        Destroy(gameObject);
+    }
 }

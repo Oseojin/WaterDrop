@@ -663,7 +663,8 @@ MonoBehaviour:
   fillCollider: {fileID: 64253682}
   maxHeight: 0
   width: 0
-  scaleToWaterRatio: 0.1
+  scaleToWaterRatio: 0.01
+  currentHeight: 0
 --- !u!4 &2089861293
 Transform:
   m_ObjectHideFlags: 0
