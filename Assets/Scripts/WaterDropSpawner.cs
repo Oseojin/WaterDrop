@@ -3,6 +3,7 @@ using UnityEngine;
 public class WaterDropSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject waterDropPrefab;
+    [SerializeField] private WaterLevelManager waterLevelManager;
 
     private WaterDrop currentDrop;
     private Camera mainCamera;
@@ -15,6 +16,7 @@ public class WaterDropSpawner : MonoBehaviour
 
     void Update()
     {
+        if (waterLevelManager.isClear) return;
         if (Input.GetMouseButtonDown(0))
         {
             Vector2 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);

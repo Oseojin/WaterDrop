@@ -10,6 +10,9 @@ public class WaterLevelManager : MonoBehaviour
 
     [SerializeField] private float currentHeight = 0f;
 
+    [SerializeField] private GameObject ClearUI;
+    public bool isClear = false;
+
     public void AddWater(float dropScale)
     {
         float delta = dropScale * scaleToWaterRatio;
@@ -21,11 +24,22 @@ public class WaterLevelManager : MonoBehaviour
         // 바닥 충돌 기준도 함께 상승
         Vector3 colliderPos = new Vector3(fillCollider.position.x, currentHeight - fillCollider.localScale.y / 2, fillCollider.position.z);
         fillCollider.localPosition = colliderPos;
+
+        if(IsFull())
+        {
+            Clear();
+        }
     }
 
     public bool IsFull()
     {
         return currentHeight >= maxHeight;
+    }
+
+    private void Clear()
+    {
+        ClearUI.SetActive(true);
+        isClear = true;
     }
 
     public void Init(SpriteRenderer _spriteRenderer)
